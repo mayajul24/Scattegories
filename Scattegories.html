@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
         <title>
             Scattegories
         </title>
@@ -15,6 +16,7 @@
             
         </form>
         <form>
+            
             <b><label for= "city"> :עיר</label></b>
             <input type="text" id="city" name="city">
         </form>
@@ -30,6 +32,12 @@
             <b><label for= "object"> :דומם</label></b>
             <input type="text" id="object" name="object">
         </form>
-        <button> הגשה</button>
+        <button onclick="openNewPage()">הגשה</button>
     </body>
+    
+    <script>
+        function openNewPage() {
+            window.location.href = 'resultPage.html';
+        }
+    </script>
 </html>
