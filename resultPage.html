@@ -22,7 +22,7 @@
             }
             </style>
     </head>
-    <body>
+    <body onload="onLoad()">
         <h1>Who will win?</h1>
         
 <table>
@@ -58,8 +58,7 @@
       <td>דומם</td>
     </tr>
   </table>
-
-  <table>
+  <table id="player2Table">
     <tr>
       <th>ניקוד</th>
       <th>תשובה</th>
@@ -67,8 +66,8 @@
       
     </tr>
     <tr>
-      <td>0</td>
-      <td>אירלנד</td>
+      <td id="resultCountryScore">0</td>
+      <td id="resultCountryValue">אירלנד</td>
       <td>ארץ</td>
     </tr>
     <tr>
@@ -92,4 +91,17 @@
       <td>דומם</td>
     </tr>
   </table>
-    </body>
+
+  <button onclick="onTest(1)">Add 1</button>
+  <button onclick="onTest(-1)">Subtract 1</button>
+    
+  <script>
+    function onTest(delta) {
+        const element = document.getElementById("resultCountryScore");
+        element.innerText = Number(element.innerText) + delta;
+
+        const player2Table = document.getElementById("player2Table");
+        player2Table.style.display = element.innerText % 2 === 0 ? "none" : "table";
+    }
+  </script>
+</body>
