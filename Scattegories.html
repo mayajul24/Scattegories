@@ -34,26 +34,26 @@
                </h1>
             <h2 id="currentPlayer">""</h2>
             <h3 id="letter" style="text-align: left;"></h3>
-            <form>
-                <b><label for= "country"> :ארץ</label></b>
+            <form dir="rtl">
+                <b><label for= "country"> ארץ:</label></b>
                 <input type="text" id="country" name="country">
                 
             </form>
-            <form>
+            <form dir="rtl">
                 
-                <b><label for= "city"> :עיר</label></b>
+                <b><label for= "city"> עיר:</label></b>
                 <input type="text" id="city" name="city">
             </form>
-            <form>
-                <b><label for= "animal"> :חי</label></b>
+            <form dir="rtl">
+                <b><label for= "animal">חי:</label></b>
                 <input type="text" id="animal" name="animal">
             </form>
-            <form>
-                <b><label for= "plant"> :צומח</label></b>
+            <form dir="rtl">
+                <b><label for= "plant"> צומח:</label></b>
                 <input type="text" id="plant" name="plant">
             </form>
-            <form>
-                <b><label for= "object"> :דומם</label></b>
+            <form dir="rtl">
+                <b><label for= "object"> דומם:</label></b>
                 <input type="text" id="object" name="object">
             </form>
             <button onclick="submit()">הגשה</button>
@@ -62,24 +62,38 @@
     <div id="resultScreen" style="display: none;">
         <style>
             table {
-              font-family: arial, sans-serif;
+              font-family: ariel, sans-serif;
+              font-size: large;
               border-collapse: collapse;
               width: 40%;
+              float: left;
+              margin: 5px;
+            }
+            caption {
+              text-align: center;
+              font-size: 20px;
+              font-weight: bold;
+              margin-bottom: 5px;
+            }
+            td {
+              text-align: center;
+              border-bottom: 1px solid cornflowerblue;
+              padding: 16px;
+            }
+            th {
+              background-color:cornflowerblue ;
+              text-align: center;
+              border-bottom: 1px solid cornflowerblue;
+              padding: 16px;
             }
             
-            td, th {
-              border: 1px solid #dddddd;
-              text-align: right;
-              padding: 8px;
-            }
-            
-            tr:nth-child(even) {
-              background-color: #dddddd;
-            }
+           
             </style>
-            <h1>Who will win?</h1>
-        
-<table>
+            <h1 style="text-align: center;">Results:</h1>
+            <h2 id="winnerName" style="text-align: center;"></h2>
+
+  <table>
+    <caption id="table1header"></caption>
     <tr>
       <th>ניקוד</th>
       <th>תשובה</th>
@@ -112,7 +126,10 @@
       <td>דומם</td>
     </tr>
   </table>
+
+       
   <table id="player2Table">
+    <caption id="table2header"></caption>
     <tr>
       <th>ניקוד</th>
       <th>תשובה</th>
@@ -121,30 +138,32 @@
     </tr>
     <tr>
       <td id="countryScore2">0</td>
-      <td id="countryValue2">אירלנד</td>
+      <td id="countryValue2"></td>
       <td>ארץ</td>
     </tr>
     <tr>
       <td id="cityScore2">0</td>
-      <td id="cityValue2">אשדוד</td>
+      <td id="cityValue2"></td>
       <td>עיר</td>
     </tr>
     <tr>
       <td id="animalScore2">0</td>
-      <td id="animalValue2">ארנב</td>
+      <td id="animalValue2"></td>
       <td>חי</td>
     </tr>
     <tr>
       <td id="plantScore2">0</td>
-      <td id="plantValue2">אירוס</td>
+      <td id="plantValue2"></td>
       <td >צומח</td>
     </tr>
     <tr>
       <td id="objectScore2">0</td>
-      <td id="objectValue2">ארגז</td>
+      <td id="objectValue2"></td>
       <td>דומם</td>
     </tr>
   </table>
+  <button id="newRound" onclick="newRound()">Next round?</button>
+  <button id="finish">Finish game</button>
     </div>
     <script>
       let stage = "player1"
@@ -194,7 +213,24 @@
       }
       function score(category)
       {
-        if(!player1Ans[category] && player2Ans[category])
+        if(player1Ans[category] && player2Ans[category])
+        {
+          if(player1Ans[category] === player2Ans[category])
+          {
+            player1Score = player1Score + 5
+            player2Score = player2Score + 5
+            document.getElementById(category+"Score1").innerHTML = 5
+            document.getElementById(category+"Score2").innerHTML = 5
+          }
+          else
+          {
+            player1Score = player1Score + 10
+            player2Score = player2Score + 10
+            document.getElementById(category+"Score1").innerHTML = 10
+            document.getElementById(category+"Score2").innerHTML = 10
+          }
+        }
+        else if(!player1Ans[category] && player2Ans[category])
         {
           player2Score = player2Score + 15
           document.getElementById(category+"Score2").innerHTML = 15
@@ -203,22 +239,6 @@
         {
           player1Score = player1Score + 15
           document.getElementById(category+"Score1").innerHTML = 15
-        }
-        else {
-          if(player1Ans[category].value === player2Ans[category].value)
-        {
-          player1Score = player1Score + 5
-          player2Score = player2Score + 5
-          document.getElementById(category+"Score1").innerHTML = 5
-          document.getElementById(category+"Score2").innerHTML = 5
-        }
-        else
-        {
-          player1Score = player1Score + 10
-          player2Score = player2Score + 10
-          document.getElementById(category+"Score1").innerHTML = 10
-          document.getElementById(category+"Score2").innerHTML = 10
-        }
         }
       }
         function submit(){
@@ -233,14 +253,32 @@
             mainScore();
             loadAnswers();
             openResultPage()
+            stage = "player1"
           }
           clearFields();
+        }
+        function announceWinner()
+        {
+          if(player1Score > player2Score)
+          {
+            return "The winner is "+player1Name+"!!!"
+          }
+          else if(player1Score < player2Score)
+          {
+            return "The winner is "+player2Name+"!!!"
+          }
+          else {
+            return "It's a tie!"
+          } 
         }
         function openResultPage() {
             const resultPage = document.getElementById("resultScreen")
             const gamePage = document.getElementById("gameScreen")
             resultPage.style.display = "block"
             gamePage.style.display = "none"
+            document.getElementById("table1header").innerHTML = player1Name 
+            document.getElementById("table2header").innerHTML = player2Name
+            document.getElementById("winnerName").innerHTML = announceWinner(); 
         }
         function randomizeLetter() {
           const letters = ["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת"]
@@ -256,6 +294,15 @@
           document.getElementById("currentPlayer").innerHTML = "It's "+ player1Name +"'s "+"turn!"
           document.getElementById("letter").innerHTML = "The letter is... "+ randomizeLetter()
           
+      }
+      function newRound()
+      {
+        const resultPage = document.getElementById("resultScreen")
+        const gamePage = document.getElementById("gameScreen") 
+        resultPage.style.display = "none"
+        gamePage.style.display = "block"
+        document.getElementById("currentPlayer").innerHTML = "It's "+ player1Name +"'s "+"turn!"
+        document.getElementById("letter").innerHTML = "The letter is... "+ randomizeLetter()
       }
     </script>
         </body>
