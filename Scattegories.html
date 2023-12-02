@@ -1,309 +1,597 @@
-<!DOCTYPE html>
-<html>
-  <div id="welcomeScreen" style="display: block;">
-    <head>
-      <title>
-          Scattegories
-      </title>
-  </head>
-  <body>
-      <h1 style= "text-align: center;"> Welcome to Scattegories! </h1>
-      <h2 style= "text-align: center;"> Please enter your names: </h2>
-      <form>
-        <b><label for= "player1"> Player 1:</label></b>
-        <input type="text" id="player1" name="player1">
-        
-    </form>
-    <form>
-        
-        <b><label for= "player2"> Player 2:</label></b>
-        <input type="text" id="player2" name="player2">
-    </form>
-      <button onclick="login()">play
-      </button>
-      
-  </div>
-    <div id="gameScreen" style="display: none;">
-        <head>
-            <title>
-                Scattegories
-            </title>
-        </head>
-        <body>
-            <h1 style= "text-align: center;"> Let's play! 
-               </h1>
-            <h2 id="currentPlayer">""</h2>
-            <h3 id="letter" style="text-align: left;"></h3>
-            <form dir="rtl">
-                <b><label for= "country"> ארץ:</label></b>
-                <input type="text" id="country" name="country">
-                
-            </form>
-            <form dir="rtl">
-                
-                <b><label for= "city"> עיר:</label></b>
-                <input type="text" id="city" name="city">
-            </form>
-            <form dir="rtl">
-                <b><label for= "animal">חי:</label></b>
-                <input type="text" id="animal" name="animal">
-            </form>
-            <form dir="rtl">
-                <b><label for= "plant"> צומח:</label></b>
-                <input type="text" id="plant" name="plant">
-            </form>
-            <form dir="rtl">
-                <b><label for= "object"> דומם:</label></b>
-                <input type="text" id="object" name="object">
-            </form>
-            <button onclick="submit()">הגשה</button>
-    
-    </div>
-    <div id="resultScreen" style="display: none;">
-        <style>
-            table {
-              font-family: ariel, sans-serif;
-              font-size: large;
-              border-collapse: collapse;
-              width: 40%;
-              float: left;
-              margin: 5px;
-            }
-            caption {
-              text-align: center;
-              font-size: 20px;
-              font-weight: bold;
-              margin-bottom: 5px;
-            }
-            td {
-              text-align: center;
-              border-bottom: 1px solid cornflowerblue;
-              padding: 16px;
-            }
-            th {
-              background-color:cornflowerblue ;
-              text-align: center;
-              border-bottom: 1px solid cornflowerblue;
-              padding: 16px;
-            }
-            
-           
-            </style>
-            <h1 style="text-align: center;">Results:</h1>
-            <h2 id="winnerName" style="text-align: center;"></h2>
-
-  <table>
-    <caption id="table1header"></caption>
-    <tr>
-      <th>ניקוד</th>
-      <th>תשובה</th>
-      <th>קטגוריה</th>
-      
-    </tr>
-    <tr>
-      <td id="countryScore1">0</td>
-      <td id="countryValue1">אירלנד</td>
-      <td>ארץ</td>
-    </tr>
-    <tr>
-      <td id="cityScore1">0</td>
-      <td id="cityValue1">אשדוד</td>
-      <td>עיר</td>
-    </tr>
-    <tr>
-      <td id="animalScore1">0</td>
-      <td id="animalValue1">ארנב</td>
-      <td>חי</td>
-    </tr>
-    <tr>
-      <td id="plantScore1">0</td>
-      <td id="plantValue1">אירוס</td>
-      <td>צומח</td>
-    </tr>
-    <tr>
-      <td id="objectScore1">0</td>
-      <td id="objectValue1">ארגז</td>
-      <td>דומם</td>
-    </tr>
-  </table>
-
-       
-  <table id="player2Table">
-    <caption id="table2header"></caption>
-    <tr>
-      <th>ניקוד</th>
-      <th>תשובה</th>
-      <th>קטגוריה</th>
-      
-    </tr>
-    <tr>
-      <td id="countryScore2">0</td>
-      <td id="countryValue2"></td>
-      <td>ארץ</td>
-    </tr>
-    <tr>
-      <td id="cityScore2">0</td>
-      <td id="cityValue2"></td>
-      <td>עיר</td>
-    </tr>
-    <tr>
-      <td id="animalScore2">0</td>
-      <td id="animalValue2"></td>
-      <td>חי</td>
-    </tr>
-    <tr>
-      <td id="plantScore2">0</td>
-      <td id="plantValue2"></td>
-      <td >צומח</td>
-    </tr>
-    <tr>
-      <td id="objectScore2">0</td>
-      <td id="objectValue2"></td>
-      <td>דומם</td>
-    </tr>
-  </table>
-  <button id="newRound" onclick="newRound()">Next round?</button>
-  <button id="finish">Finish game</button>
-    </div>
-    <script>
-      let stage = "player1"
-      let player1Name=""
-      let player2Name=""
-      let player1Ans = {}
-      let player2Ans = {}
-      let player1Score=0
-      let player2Score=0
-      function clearFields() {
-        document.getElementById("country").value = ""
-        document.getElementById("city").value = ""
-        document.getElementById("animal").value = ""
-        document.getElementById("plant").value = ""
-        document.getElementById("object").value = ""
-            
-      }
-      function loadAnswers()
-      {
-    document.getElementById("countryValue1").innerHTML = player1Ans.country
-        document.getElementById("cityValue1").innerHTML = player1Ans.city
-        document.getElementById("animalValue1").innerHTML = player1Ans.animal
-        document.getElementById("plantValue1").innerHTML = player1Ans.plant
-        document.getElementById("objectValue1").innerHTML = player1Ans.object
-        document.getElementById("countryValue2").innerHTML = player2Ans.country
-        document.getElementById("cityValue2").innerHTML = player2Ans.city
-        document.getElementById("animalValue2").innerHTML = player2Ans.animal
-        document.getElementById("plantValue2").innerHTML = player2Ans.plant
-        document.getElementById("objectValue2").innerHTML = player2Ans.object
-      }
-      function saveData(playerAns)
-      {
-        playerAns.country = document.getElementById("country").value
-        playerAns.city = document.getElementById("city").value
-        playerAns.animal = document.getElementById("animal").value
-        playerAns.plant = document.getElementById("plant").value
-        playerAns.object = document.getElementById("object").value
-            
-      }
-      function mainScore()
-      {
-        score("country")
-        score("city")
-        score("animal")
-        score("plant")
-        score("object")
-      }
-      function score(category)
-      {
-        if(player1Ans[category] && player2Ans[category])
-        {
-          if(player1Ans[category] === player2Ans[category])
-          {
-            player1Score = player1Score + 5
-            player2Score = player2Score + 5
-            document.getElementById(category+"Score1").innerHTML = 5
-            document.getElementById(category+"Score2").innerHTML = 5
-          }
-          else
-          {
-            player1Score = player1Score + 10
-            player2Score = player2Score + 10
-            document.getElementById(category+"Score1").innerHTML = 10
-            document.getElementById(category+"Score2").innerHTML = 10
-          }
-        }
-        else if(!player1Ans[category] && player2Ans[category])
-        {
-          player2Score = player2Score + 15
-          document.getElementById(category+"Score2").innerHTML = 15
-        }
-        else if(player1Ans[category] && !player2Ans[category])
-        {
-          player1Score = player1Score + 15
-          document.getElementById(category+"Score1").innerHTML = 15
-        }
-      }
-        function submit(){
-          if(stage == "player1")
-          {
-            saveData(player1Ans);
-            document.getElementById("currentPlayer").innerHTML = "It's "+ player2Name +"'s "+"turn!"
-            stage = "player2"
-          }
-          else{
-            saveData(player2Ans);
-            mainScore();
-            loadAnswers();
-            openResultPage()
-            stage = "player1"
-          }
-          clearFields();
-        }
-        function announceWinner()
-        {
-          if(player1Score > player2Score)
-          {
-            return "The winner is "+player1Name+"!!!"
-          }
-          else if(player1Score < player2Score)
-          {
-            return "The winner is "+player2Name+"!!!"
-          }
-          else {
-            return "It's a tie!"
-          } 
-        }
-        function openResultPage() {
-            const resultPage = document.getElementById("resultScreen")
-            const gamePage = document.getElementById("gameScreen")
-            resultPage.style.display = "block"
-            gamePage.style.display = "none"
-            document.getElementById("table1header").innerHTML = player1Name 
-            document.getElementById("table2header").innerHTML = player2Name
-            document.getElementById("winnerName").innerHTML = announceWinner(); 
-        }
-        function randomizeLetter() {
-          const letters = ["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת"]
-          return letters[Math.floor(Math.random()*letters.length)];
-        }
-        function login() {
-          player1Name = document.getElementById("player1").value;
-          player2Name = document.getElementById("player2").value;
-          const welcomePage = document.getElementById("welcomeScreen")
-          const gamePage = document.getElementById("gameScreen")
-          welcomePage.style.display = "none"
-          gamePage.style.display = "block"
-          document.getElementById("currentPlayer").innerHTML = "It's "+ player1Name +"'s "+"turn!"
-          document.getElementById("letter").innerHTML = "The letter is... "+ randomizeLetter()
+        <!DOCTYPE html>
+        <html dir="rtl">
           
-      }
-      function newRound()
-      {
-        const resultPage = document.getElementById("resultScreen")
-        const gamePage = document.getElementById("gameScreen") 
-        resultPage.style.display = "none"
-        gamePage.style.display = "block"
-        document.getElementById("currentPlayer").innerHTML = "It's "+ player1Name +"'s "+"turn!"
-        document.getElementById("letter").innerHTML = "The letter is... "+ randomizeLetter()
-      }
-    </script>
-        </body>
-</html>
+          <style>
+            
+            .game { 
+              height: 100vh;
+              text-decoration: wavy;
+              font-size:xx-large;
+              color:white;
+              font-weight:bold;
+              text-align: center;
+                  
+            }
+            .grid {
+              display:grid;
+              align-content: center;
+              grid-template-columns: 1fr 1fr 1fr;
+              grid-template-rows: 1fr 1fr 1fr;
+              
+            }
+        
+            .intro {
+                  height: 100vh;
+                  text-decoration: wavy;
+                  font-size:40px;
+                  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  color:darkslategray;
+                  font-weight:bold;
+                  text-align: center;
+                  background-image: url("view2.jpg");
+                  background-size:cover;   
+            }
+            .button {
+              font-size: large;
+              background-color:cadetblue;
+              margin-top: -50px;
+              font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+              padding: 10px 48px;
+              font-weight: bold;
+              cursor: pointer;
+              border-radius: 8px;
+              text-align: center;
+            }
+            .child {
+              display: inline-block;
+              padding: 1rem 1rem;
+              vertical-align: middle;
+            }
+            input[type=text] {
+              width: 200px;
+              height: 30px;
+            }
+            form {
+              font-size: x-large;
+            }
+          </style>
+          <div class="intro" id="welcomeScreen" style="display: block;">
+            <head>
+              <title>
+                  ארץ עיר
+              </title>
+          </head>
+              <h1> ברוכים הבאים לארץ עיר!</h1>
+              <h2 style="margin-top: -50px;"> הכניסו שמות משתמשים:</h2>
+              <div style="text-align: center;">
+                
+            <div class="child">
+              <label for= "player1"> שחקן 1</label>
+                <input type="text" id="player1" name="player1"> <br> <br>
+            </div>
+            <div class="child">
+                <label for= "player2"> שחקן 2</label>
+                <input type="text" id="player2" name="player2"> <br> <br>
+            </div>
+              
+              </div>
+              <button class="button" onclick="login()">למשחק!
+              </button>
+              
+          </div>
+            <div id="gameScreen" style="display: none; ">
+                <head>
+                    <title>
+                        ארץ עיר
+                    </title>
+                </head>
+                    <h1 style= "text-align: center;"> בואו נשחק!
+                      </h1>
+                    <h2 id="currentPlayer">""</h2>
+                    <h3 id="letter" style="text-align: center;"></h3>
+                    <h4 id="timer" style="text-align: left;">60</h4>
+                    <div class="grid" dir="rtl">
+                      <div> 
+                        <b><label for= "country"> ארץ:</label></b>
+                        <input type="text" id="country" name="country" oninput="onFieldInput(this)"> <br> <br>
+                    
+                      </div>
+                      <div>
+                        <b><label for= "city"> עיר:</label></b>
+                      <input type="text" id="city" name="city" oninput="onFieldInput(this)"> <br> <br>
+                      </div> 
+                      <div>
+                        <b><label for= "animal">חי:</label></b>
+                        <input type="text" id="animal" name="animal" oninput="onFieldInput(this)"> <br> <br>
+                      </div>
+
+                      <div>
+                        <b><label for= "plant"> צומח:</label></b>
+                        <input type="text" id="plant" name="plant" oninput="onFieldInput(this)"> <br> <br>
+                      </div>
+                      <div>
+                        <b><label for= "object"> דומם:</label></b>
+                        <input type="text" id="object" name="object" oninput="onFieldInput(this)"> <br> <br>
+                      </div>
+                          <div>
+                            <b><label for= "boy">ילד:</label></b>
+                          <input type="text" id="boy" name="boy" oninput="onFieldInput(this)"> <br> <br>
+                          </div>
+                        <div>
+                          <b><label for= "girl"> ילדה:</label></b>
+                          <input type="text" id="girl" name="girl" oninput="onFieldInput(this)"> <br> <br>
+                        </div>
+                          <div>
+                          <b><label for= "job"> מקצוע:</label></b>
+                          <input type="text" id="job" name="job" oninput="onFieldInput(this)"> <br> <br>
+                          </div>
+                        <div>
+                          <b><label for= "food"> מאכל</label></b>
+                        <input type="text" id="food" name="food" oninput="onFieldInput(this)"> <br> <br>
+                        </div>
+                      <div>
+                        <b><label for= "famous"> אישיות:</label></b>
+                        <input type="text" id="famous" name="famous" oninput="onFieldInput(this)"> <br> <br>
+                      </div>
+                        
+                    </div> 
+                    <button class="button" onclick="submit()">הגשה</button>
+            
+            </div>
+            <div id="resultScreen" style="display: none;">
+                <style>
+                
+                    table {
+                      font-family: ariel, sans-serif;
+                      font-size: large;
+                      border-collapse: collapse;
+                      width: 40%;
+                      float: left;
+                      margin: 5px;
+                    }
+                    caption {
+                      text-align: center;
+                      font-size: 20px;
+                      font-weight: bold;
+                      margin-bottom: 5px;
+                    }
+                    td {
+                      text-align: center;
+                      border-bottom: 1px solid cornflowerblue;
+                      padding: 16px;
+                    }
+                    th {
+                      background-color:cornflowerblue ;
+                      text-align: center;
+                      border-bottom: 1px solid cornflowerblue;
+                      padding: 16px;
+                    }
+                      
+                    </style>
+                    <h1 id="winnerName" style="text-align: center;">Results:</h1>
+                    <div id="currentScore1" style="font-size: 20px;text-align: center;"></div>
+                    <div id="currentScore2" style="font-size: 20px;text-align: center;"></div>
+                    
+
+          <table>
+            <caption id="table1header"></caption>
+            <tr>
+              <th>קטגוריה</th>
+              <th>תשובה</th>
+              <th>ניקוד</th>   
+              
+            </tr>
+            <tr>
+              <td>ארץ</td>
+              <td id="countryValue1"></td>
+              <td id="countryScore1">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td>עיר</td>
+              <td id="cityValue1"></td>
+              <td id="cityScore1">0</td>
+              
+            </tr>
+            <tr>
+              <td>חי</td>
+              <td id="animalValue1"></td>
+              <td id="animalScore1">0</td>
+            
+            </tr>
+            <tr>
+              <td>צומח</td>
+              <td id="plantValue1"></td>
+              <td id="plantScore1">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td>דומם</td>
+              <td id="objectValue1"></td>
+              <td id="objectScore1">0</td>   
+              
+            </tr>
+            <tr>
+              <td>שם של ילד</td>
+              <td id="boyValue1"></td>
+              <td id="boyScore1">0</td>
+            </tr>
+            <tr>
+              <td>שם של ילדה</td>
+              <td id="girlValue1"></td>
+              <td id="girlScore1">0</td>
+            </tr>
+            <tr>
+              <td>מקצוע</td>
+              <td id="jobValue1"></td>
+              <td id="jobScore1">0</td>
+            </tr>
+            <tr>
+              <td>מאכל</td>
+              <td id="foodValue1"></td>
+              <td id="foodScore1">0</td>
+            </tr>
+            <tr>
+              <td>אישיות</td>
+              <td id="famousValue1"></td>
+              <td id="famousScore1">0</td>
+            </tr>
+
+          </table>
+            
+          <table id="player2Table">
+            <caption id="table2header"></caption>
+            <tr>
+              <th>קטגוריה</th>
+              <th>תשובה</th>
+              <th>ניקוד</th>   
+              
+            </tr>
+            <tr>
+              <td>ארץ</td>
+              <td id="countryValue2"></td>
+              <td id="countryScore2">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td>עיר</td>
+              <td id="cityValue2"></td>
+              <td id="cityScore2">0</td>
+              
+            </tr>
+            <tr>
+              <td>חי</td>
+              <td id="animalValue2"></td>
+              <td id="animalScore2">0</td>
+            
+            </tr>
+            <tr>
+              <td>צומח</td>
+              <td id="plantValue2"></td>
+              <td id="plantScore2">0</td>
+              
+              
+            </tr>
+            <tr>
+              <td>דומם</td>
+              <td id="objectValue2"></td>
+              <td id="objectScore2">0</td>   
+              
+            </tr>
+            <tr>
+              <td>ילד</td>
+              <td id="boyValue2"></td>
+              <td id="boyScore2">0</td>
+            </tr>
+            <tr>
+              <td>ילדה</td>
+              <td id="girlValue2"></td>
+              <td id="girlScore2">0</td>
+            </tr>
+            <tr>
+              <td>מקצוע</td>
+              <td id="jobValue2"></td>
+              <td id="jobScore2">0</td>
+            </tr>
+            <tr>
+              <td>מאכל</td>
+              <td id="foodValue2"></td>
+              <td id="foodScore2">0</td>
+            </tr>
+            <tr>
+              <td>אישיות</td>
+              <td id="famousValue2"></td>
+              <td id="famousScore2">0</td>
+            </tr>
+          </table>
+          <button id="newRound" onclick="newRound()">עוד סיבוב?</button>
+          
+            </div>
+            <body>
+              
+            </body>
+            <script>
+              let stage = "player1"
+              let player1Name=""
+              let player2Name=""
+              let player1Ans = {}
+              let player2Ans = {}
+              let player1Score=0
+              let player2Score=0
+              let player1total=0
+              let player2total=0
+              let newLetter = "";
+              let prevLetters = [];
+              let timeLeft = 60;
+              let fields = ["country","city","animal","plant","object","boy","girl","job","food","famous"];
+
+            
+              function clearFields() {
+                fields.forEach((field) => {
+                  document.getElementById(field).value = ""
+                });
+              }
+
+              function loadAnswers()
+              {
+                fields.forEach((field) => {
+                  document.getElementById(`${field}Value1`).innerHTML = player1Ans[field]
+                  document.getElementById(`${field}Value2`).innerHTML = player2Ans[field]
+                });
+              }
+
+              function saveData(playerAns)
+              {
+                fields.forEach((field) => {
+                  playerAns[field] = document.getElementById(field).value
+                });       
+              }
+
+              function mainScore()
+              {
+                fields.forEach((field) => {
+                  score(field);
+                })
+              }
+
+              function score(category)
+              {
+                if(player1Ans[category] && player2Ans[category])
+                {
+                  if(player1Ans[category] === player2Ans[category])
+                  {
+                    player1Score = player1Score + 5
+                    player1total = player1total + 5
+                    player2Score = player2Score + 5
+                    player2total = player2total + 5
+                    document.getElementById(category+"Score1").innerHTML = 5
+                    document.getElementById(category+"Score2").innerHTML = 5
+                  }
+                  else
+                  {
+                    player1Score = player1Score + 10
+                    player1total = player2Score + 10
+                    player2Score = player2Score + 10
+                    player2total = player2total + 10
+                    document.getElementById(category+"Score1").innerHTML = 10
+                    document.getElementById(category+"Score2").innerHTML = 10
+                  }
+                }
+                else if(!player1Ans[category] && player2Ans[category])
+                {
+                  player2Score = player2Score + 15
+                  player2total = player2total + 15
+                  document.getElementById(category+"Score2").innerHTML = 15
+                }
+                else if(player1Ans[category] && !player2Ans[category])
+                {
+                  player1Score = player1Score + 15
+                  player1total = player1total + 15
+                  document.getElementById(category+"Score1").innerHTML = 15
+                }
+              }
+
+              function submit(){
+                if(stage == "player1")
+                {
+                  if(checkAllInputs(1))
+                  {
+                    prepareNextPlayer();
+                  }
+                  else if(timeLeft>0) {
+                    alert(`שים לב כי המילים חייבות להתחיל באות ${newLetter}`);
+                  }
+                  else
+                  {
+                    clearInvalidFields();
+                    prepareNextPlayer();
+                  } 
+                }
+                else if(checkAllInputs(1))
+                  {
+                    prepareResults();
+                  }
+                  else if(timeLeft>0)
+                    {
+                      alert(`שים לב כי המילים חייבות להתחיל באות ${newLetter}`);
+                    }
+                    else {
+                      clearInvalidFields();
+                      prepareResults();
+                    }
+                  } 
+
+                function prepareNextPlayer()
+                {
+                  saveData(player1Ans);
+                  document.getElementById("currentPlayer").innerHTML = `התור של ${player2Name} !`;
+                  stage = "player2";
+                  clearFields();
+                  timeLeft = 60;
+                  timer();
+                }
+                  
+                function prepareResults()
+                {
+                  saveData(player2Ans);
+                  mainScore();
+                  loadAnswers();
+                  openResultPage();
+                  stage = "player1";
+                  clearFields();
+                }
+
+                function clearInvalidFields()
+                {
+                  fields.forEach((field) => {
+                    if(!isInputValid(document.getElementById(field)))
+                    {
+                      document.getElementById(field).value = "";
+                    }
+                  });
+                }
+
+                function validLoginNames()
+                {
+                  const name1 = document.getElementById("player1");
+                  const name2 = document.getElementById("player2");
+                  if(!name1.value || !name2.value)
+                  {
+                    return false;
+                  }
+                  else {
+                    return true;
+                  } 
+                }
+
+                function clearScore()
+                {
+                  fields.forEach((field) => {
+                    document.getElementById(`${field}Score1`).innerHTML = 0;
+                    document.getElementById(`${field}Score2`).innerHTML = 0;
+                  });
+                }
+
+                function announceWinner()
+                {
+                  if(player1Score > player2Score)
+                  {
+                    return "המנצח הוא  "+player1Name+"!!!"
+                  }
+                  else if(player1Score < player2Score)
+                  {
+                    return "המנצח הוא  "+player2Name+"!!!"
+                  }
+                  else {
+                    return "תיקו!"
+                  } 
+                }
+
+                function openResultPage() {
+                    const resultPage = document.getElementById("resultScreen")
+                    const gamePage = document.getElementById("gameScreen")
+                    resultPage.style.display = "block"
+                    gamePage.style.display = "none"
+                    document.getElementById("table1header").innerHTML = player1Name 
+                    document.getElementById("table2header").innerHTML = player2Name
+                    document.getElementById("currentScore1").innerHTML = player1Name+": "+player1Score+" נקודות  "
+                    document.getElementById("currentScore2").innerHTML = player2Name+": "+player2Score+" נקודות"  
+                    document.getElementById("winnerName").innerHTML = announceWinner(); 
+                }
+
+                function randomizeLetter(currentLetter) {
+                  const letters = ["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת"]
+                  newLetter = letters[Math.floor(Math.random()*letters.length)];
+                  while(prevLetters.indexOf(newLetter)!=-1)
+                  {
+                    newLetter = letters[Math.floor(Math.random()*letters.length)];
+                  }
+                  prevLetters.push(newLetter); 
+                  return newLetter;
+                }
+
+                function login() {
+                  if(validLoginNames())
+                  {
+                    player1Name = document.getElementById("player1").value;
+                    player2Name = document.getElementById("player2").value;
+                    const welcomePage = document.getElementById("welcomeScreen")
+                    const gamePage = document.getElementById("gameScreen")
+                    welcomePage.style.display = "none"
+                    gamePage.style.display = "block"
+                    document.getElementById("currentPlayer").innerHTML = "התור של "+ player1Name + "!"
+                    document.getElementById("letter").innerHTML = "האות היא... "+ randomizeLetter("")
+                    timer();
+                  }
+                  else
+                  {
+                    alert("כדי להתחיל לשחק, הכניסו קודם את שמות השחקנים")
+                  }
+              }
+
+              function newRound()
+              {
+                player1Score=0
+                player2Score=0
+                clearScore()
+                timeLeft = 60;
+                const resultPage = document.getElementById("resultScreen")
+                const gamePage = document.getElementById("gameScreen") 
+                resultPage.style.display = "none"
+                gamePage.style.display = "block"
+                document.getElementById("currentPlayer").innerHTML = "התור של "+ player1Name +"!"
+                document.getElementById("letter").innerHTML = "האות היא... "+ randomizeLetter(newLetter)
+                timer();
+              }
+
+              function isInputValid(element)
+              {
+                input = element.value;
+                if(input !== "" && input.charAt(0) !== newLetter)
+                {
+                  return false;
+                }
+                else {
+                  return true;
+                }
+              }
+
+              function onFieldInput(element) {
+                
+                if (!isInputValid(element)) {
+                  element.style.color = "red";
+                }
+                else {
+                  element.style.color = "initial";
+                }
+              }
+
+              function checkAllInputs(player)
+              {
+                return fields.every((field) => {
+                    //You do your work here
+                    const input = document.getElementById(field); 
+                    return isInputValid(input);
+                });
+              }
+
+              function timer()
+              {
+                
+                if(timeLeft>0)
+                {
+                  timeLeft=timeLeft-1;
+                  document.getElementById("timer").innerHTML = timeLeft;
+                  setTimeout(timer,1000);
+                }
+                else {
+                  submit();
+                }
+              }
+            </script>
+                
+        </html>
