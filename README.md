@@ -1,4 +1,3 @@
-Description
 Scattergories is a fun, competitive word game where players test their creativity and quick thinking against an opponent. Each round, a randomized letter is provided, and players must think of words starting with that letter across a variety of categories—all within a limited timeframe. Players earn points based on their unique and valid word choices, making every round an exciting challenge!
 
 Features
